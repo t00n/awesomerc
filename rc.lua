@@ -49,9 +49,9 @@ end
 -- }}}
 
 -- This is used later as the default terminal and editor to run.
-terminal = "terminator"
+terminal = "xterm -bg black -fg white" 
 editor = os.getenv("EDITOR") or "vim"
-editor_cmd = "xterm -e vim"
+editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -148,8 +148,8 @@ vicious.register(batt, vicious.widgets.bat, "Batt: $2% Rem: $3", 61, "BAT")
 
 menu_items = freedesktop.menu.new()
 myawesomemenu = {
-   { "manual", "xterm -bg black -fg white -e man awesome", freedesktop.utils.lookup_icon({ icon = 'help' }) },
-   { "edit config", "xterm -bg black -fg white -e vim .config/awesome/rc.lua", freedesktop.utils.lookup_icon({ icon = 'package_settings' }) },
+   { "manual", terminal .. " -e man awesome", freedesktop.utils.lookup_icon({ icon = 'help' }) },
+   { "edit config", editor_cmd .. " .config/awesome/rc.lua", freedesktop.utils.lookup_icon({ icon = 'package_settings' }) },
    { "restart", awesome.restart, freedesktop.utils.lookup_icon({ icon = 'system-shutdown' }) },
    { "quit", awesome.quit, freedesktop.utils.lookup_icon({ icon = 'system-shutdown' }) }
        }
@@ -367,14 +367,7 @@ globalkeys = awful.util.table.join(
     -- Volume and display
     awful.key({ "Mod2" }, "XF86AudioMute",        function () awful.util.spawn_with_shell("amixer -q set Master toggle",False) end),
     awful.key({ "Mod2" }, "XF86AudioRaiseVolume", function () awful.util.spawn_with_shell("amixer -q set Master 5%+",   False) end),
-    awful.key({ "Mod2" }, "XF86AudioLowerVolume", function () awful.util.spawn_with_shell("amixer -q set Master 5%-",   False) end),
-    awful.key({ "Mod1" , "Control" }, "e",        function () awful.util.spawn_with_shell("xset dpms force off",        False) end),
-
-    --Programs
-    awful.key({ "Mod1" }, "c", function () awful.util.spawn_with_shell("chromium") end),
-    awful.key({ "Mod1" }, "f", function () awful.util.spawn_with_shell("firefox") end),
-    awful.key({ "Mod1" }, "t", function () awful.util.spawn_with_shell("dolphin") end),
-    awful.key({ "Mod1" }, "a", function () awful.util.spawn_with_shell("tor-browser-fr") end)
+    awful.key({ "Mod2" }, "XF86AudioLowerVolume", function () awful.util.spawn_with_shell("amixer -q set Master 5%-",   False) end)
 )
 
 clientkeys = awful.util.table.join(
