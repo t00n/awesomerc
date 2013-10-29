@@ -529,10 +529,4 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
--- Programs at start
-awful.util.spawn_with_shell("thunderbird")
-awful.util.spawn_with_shell("skype")
-awful.util.spawn_with_shell("loliclip --daemon")
-awful.util.spawn_with_shell("xset -display :0 s off -dpms")
-
 -- }}}
