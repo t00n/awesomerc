@@ -90,9 +90,9 @@ volicon:buttons(awful.util.table.join(
      awful.button({ }, 1,
      function() awful.util.spawn_with_shell("amixer -q set Master toggle") end),
      awful.button({ }, 4,
-     function() awful.util.spawn_with_shell("amixer -q set Master 5%+") end),
+     function() awful.util.spawn_with_shell("amixer -q set Master 2%+") end),
      awful.button({ }, 5,
-     function() awful.util.spawn_with_shell("amixer -q set Master 5%-") end)
+     function() awful.util.spawn_with_shell("amixer -q set Master 2%-") end)
             ))
      volpct:buttons(volicon:buttons())
      volspace:buttons(volicon:buttons())
