@@ -112,7 +112,7 @@ volicon:set_image(beautiful.widget_vol)
 --
 -- Volume %
 volpct = wibox.widget.textbox()
-vicious.register(volpct, vicious.widgets.volume, "$1%", nil, "Master")
+vicious.register(volpct, vicious.widgets.volume, "$1% - $2", nil, "Master")
 --
 -- Buttons
 volicon:buttons(awful.util.table.join(
