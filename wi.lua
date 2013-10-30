@@ -73,35 +73,6 @@ batpct:buttons(awful.util.table.join(awful.button({ }, 1, popup_bat)))
 baticon:buttons(batpct:buttons())
 -- End Battery}}}
 --
--- {{{ PACMAN
--- Icon
-pacicon = wibox.widget.imagebox()
-pacicon:set_image(beautiful.widget_pac)
---
--- Upgrades
-pacwidget = wibox.widget.textbox()
-vicious.register(pacwidget, vicious.widgets.pkg, function(widget, args)
-   if args[1] > 0 then
-   pacicon:set_image(beautiful.widget_pacnew)
-   else
-   pacicon:set_image(beautiful.widget_pac)
-   end
-
-  return args[1]
-  end, 1801, "Arch S") -- Arch S for ignorepkg
---
--- Buttons
-  function popup_pac()
-  local pac_updates = ""
-  local f = io.popen("pacman -Sup --dbpath /tmp/pacsync")
-  if f then
-  pac_updates = f:read("*a"):match(".*/(.*)-.*\n$")
-  end
-  f:close()
-  naughty.notify { text = pac_updates }
-  end
--- End Pacman }}}
---
 -- {{{ VOLUME
 -- Cache
 vicious.cache(vicious.widgets.volume)
@@ -119,9 +90,9 @@ volicon:buttons(awful.util.table.join(
      awful.button({ }, 1,
      function() awful.util.spawn_with_shell("amixer -q set Master toggle") end),
      awful.button({ }, 4,
-     function() awful.util.spawn_with_shell("amixer -q set Master 5+% unmute") end),
+     function() awful.util.spawn_with_shell("amixer -q set Master 5%+") end),
      awful.button({ }, 5,
-     function() awful.util.spawn_with_shell("amixer -q set Master 5-% unmute") end)
+     function() awful.util.spawn_with_shell("amixer -q set Master 5%-") end)
             ))
      volpct:buttons(volicon:buttons())
      volspace:buttons(volicon:buttons())
