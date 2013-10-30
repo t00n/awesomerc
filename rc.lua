@@ -136,7 +136,7 @@ spacer:set_text(' | ')
 
 --Weather Widget
 weather = wibox.widget.textbox()
-vicious.register(weather, vicious.widgets.weather, "Météo à ${city}:  Ciel: ${sky}.  Température: ${tempc}c  Humidité: ${humid}%.  Vent: ${windkmh} km/h", 1200, "EBBR")
+vicious.register(weather, vicious.widgets.weather, "Météo à ${city}:  Ciel: ${sky}  Température: ${tempc}°C  Humidité: ${humid}%  Vent: ${windkmh} km/h", 1200, "EBBR")
 
 --Battery Widget
 batt = wibox.widget.textbox()
