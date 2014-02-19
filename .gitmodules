@@ -1,3 +1,6 @@
 [submodule "apw"]
 	path = apw
 	url = https://github.com/mokasin/apw.git
+[submodule "delightful"]
+	path = delightful
+	url = git://scm.solitudo.net/delightful.git
