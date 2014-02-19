@@ -49,7 +49,7 @@ end
 -- }}}
 
 -- This is used later as the default terminal and editor to run.
-terminal = "xterm -bg black -fg white" 
+terminal = "terminator" 
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -136,7 +136,7 @@ spacer:set_text(' | ')
 
 --Weather Widget
 weather = wibox.widget.textbox()
-vicious.register(weather, vicious.widgets.weather, "Météo à ${city}:  Ciel: ${sky}  Température: ${tempc}°C  Humidité: ${humid}%  Vent: ${windkmh} km/h", 1200, "EBBR")
+vicious.register(weather, vicious.widgets.weather, "${city}:  Ciel: ${sky}  T°: ${tempc}°C  Humidité: ${humid}%  Vent: ${windkmh} km/h", 1200, "EBBR")
 
 --Battery Widget
 batt = wibox.widget.textbox()
@@ -150,6 +150,7 @@ menu_items = freedesktop.menu.new()
 myawesomemenu = {
    { "manual", terminal .. " -e man awesome", freedesktop.utils.lookup_icon({ icon = 'help' }) },
    { "edit config", editor_cmd .. " .config/awesome/rc.lua", freedesktop.utils.lookup_icon({ icon = 'package_settings' }) },
+   { "Hibernate", "systemctl hibernate", freedesktop.utils.lookup_icon({ icon = 'system-hibernate' }) },
    { "restart", awesome.restart, freedesktop.utils.lookup_icon({ icon = 'system-shutdown' }) },
    { "quit", awesome.quit, freedesktop.utils.lookup_icon({ icon = 'system-shutdown' }) }
        }
