@@ -113,6 +113,25 @@ spacer:set_text(' | ')
 -- Create a laucher widget and a main menu
 
 menu_items = freedesktop.menu.new()
+myawesomemenu = {
+   { "manual", terminal .. " -e man awesome", freedesktop.utils.lookup_icon({ icon = 'help' }) },
+   { "edit config", editor_cmd .. " .config/awesome/rc.lua", freedesktop.utils.lookup_icon({ icon = 'package_settings' }) },
+   { "Hibernate", "systemctl hibernate", freedesktop.utils.lookup_icon({ icon = 'system-hibernate' }) },
+   { "restart", awesome.restart, freedesktop.utils.lookup_icon({ icon = 'system-shutdown' }) },
+   { "quit", awesome.quit, freedesktop.utils.lookup_icon({ icon = 'system-shutdown' }) }
+       }
+
+        table.insert(menu_items, { "Awesome", myawesomemenu, beautiful.awesome_icon })
+        table.insert(menu_items, { "Wallpaper", wallmenu, freedesktop.utils.lookup_icon({ icon = 'gnome-settings-background' })}) 
+
+        mymainmenu = awful.menu({ items = menu_items, width = 150 })
+
+mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
+                                     menu = mymainmenu })
+
+-- Menubar configuration
+menubar.utils.terminal = terminal -- Set the terminal for applications that require it
+-- }}}
 
 -- {{{ Wibox
 -- Create a textclock widget
