@@ -18,9 +18,7 @@ local menubar = require("menubar")
 require('freedesktop.utils')
 freedesktop.utils.icon_theme = 'oxygen'
 require('freedesktop.menu')
-require('freedesktop.desktop')
---Vicious + Widgets 
-vicious = require("vicious")
+--Vicious + Widgets
 local wi = require("wi")
 
 -- {{{ Error handling
@@ -127,12 +125,6 @@ mymainmenu = awful.menu({ items = menu_items, width = 150 })
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
 
--- desktop icons
--- for s = 1, screen.count() do
---     freedesktop.desktop.add_applications_icons({screen = s, showlabels = true})
---     freedesktop.desktop.add_dirs_and_files_icons({screen = s, showlabels = true})
--- end
-
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
@@ -221,9 +213,6 @@ for s = 1, screen.count() do
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(spacer)
-    right_layout:add(baticon)
-    right_layout:add(batpct)
-    right_layout:add(spacer)
     right_layout:add(volicon)
     right_layout:add(volpct)
     right_layout:add(volspace)
@@ -237,7 +226,7 @@ for s = 1, screen.count() do
     layout:set_middle(mytasklist[s])
     layout:set_right(right_layout)
 
-   mywibox[s]:set_widget(layout)
+    mywibox[s]:set_widget(layout)
    
    -- Create the bottom wibox
      myinfowibox[s] = awful.wibox({ position = "bottom", screen = s })
@@ -254,12 +243,7 @@ for s = 1, screen.count() do
     bottom_layout:add(spacer)
     bottom_layout:add(weather)
 
- -- Now bring it all together 
-    --local layout = wibox.layout.align.horizontal()
-    --layout:set_bottom(bottom_layout)
-
     myinfowibox[s]:set_widget(bottom_layout)
-
 end
 -- }}}
 
