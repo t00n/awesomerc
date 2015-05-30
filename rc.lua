@@ -2,7 +2,6 @@
 home_path  = os.getenv('HOME') .. '/'
 
 -- Standard awesome library
-local gears = require("gears")
 local awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
@@ -17,8 +16,9 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 --FreeDesktop
 require('freedesktop.utils')
+freedesktop.utils.icon_theme = 'oxygen'
 require('freedesktop.menu')
-freedesktop.utils.icon_theme = 'gnome'
+require('freedesktop.desktop')
 --Vicious + Widgets 
 vicious = require("vicious")
 local wi = require("wi")
@@ -52,6 +52,7 @@ end
 terminal = "terminator" 
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
+filemanager = "caja"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -95,13 +96,7 @@ naughty.config.defaults.border_width = 2
 naughty.config.defaults.hover_timeout = nil
 -- -- }}}
 
--- {{{ Wallpaper
-if beautiful.wallpaper then
-    for s = 1, screen.count() do
-        gears.wallpaper.maximized(beautiful.wallpaper, s, true)
-    end
-end
--- }}}
+-- Widgets 
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
@@ -112,56 +107,31 @@ for s = 1, screen.count() do
 end
 -- }}}
 
--- Wallpaper Changer Based On 
--- menu icon menu pdq 07-02-2012
- local wallmenu = {}
- local function wall_load(wall)
- local f = io.popen('ln -sfn ' .. home_path .. '.config/awesome/wallpaper/' .. wall .. ' ' .. home_path .. '.config/awesome/themes/default/bg.png')
- awesome.restart()
- end
- local function wall_menu()
- local f = io.popen('ls -1 ' .. home_path .. '.config/awesome/wallpaper/')
- for l in f:lines() do
-local item = { l, function () wall_load(l) end }
- table.insert(wallmenu, item)
- end
- f:close()
- end
- wall_menu()
-
--- Widgets 
-
 spacer       = wibox.widget.textbox()
 spacer:set_text(' | ')
-
---Weather Widget
-weather = wibox.widget.textbox()
-vicious.register(weather, vicious.widgets.weather, "${city}:  Ciel: ${sky}  T°: ${tempc}°C  Humidité: ${humid}%  Vent: ${windkmh} km/h", 1200, "EBBR")
-
---Battery Widget
-batt = wibox.widget.textbox()
-vicious.register(batt, vicious.widgets.bat, "Batt: $2% Rem: $3", 61, "BAT")
-
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
 
 menu_items = freedesktop.menu.new()
 myawesomemenu = {
-   { "manual", terminal .. " -e man awesome", freedesktop.utils.lookup_icon({ icon = 'help' }) },
-   { "edit config", editor_cmd .. " .config/awesome/rc.lua", freedesktop.utils.lookup_icon({ icon = 'package_settings' }) },
-   { "Hibernate", "systemctl hibernate", freedesktop.utils.lookup_icon({ icon = 'system-hibernate' }) },
-   { "restart", awesome.restart, freedesktop.utils.lookup_icon({ icon = 'system-shutdown' }) },
-   { "quit", awesome.quit, freedesktop.utils.lookup_icon({ icon = 'system-shutdown' }) }
-       }
+   { "Manual", terminal .. " -e man awesome", freedesktop.utils.lookup_icon({ icon = 'help' }) },
+   { "Edit config", editor_cmd .. " .config/awesome/rc.lua", freedesktop.utils.lookup_icon({ icon = 'package_settings' }) },
+   { "Restart", awesome.restart, freedesktop.utils.lookup_icon({ icon = 'system-shutdown' }) },
+   { "Quit", awesome.quit, freedesktop.utils.lookup_icon({ icon = 'system-shutdown' }) }
+}
 
-        table.insert(menu_items, { "Awesome", myawesomemenu, beautiful.awesome_icon })
-        table.insert(menu_items, { "Wallpaper", wallmenu, freedesktop.utils.lookup_icon({ icon = 'gnome-settings-background' })}) 
-
-        mymainmenu = awful.menu({ items = menu_items, width = 150 })
+table.insert(menu_items, { "Awesome", myawesomemenu, beautiful.awesome_icon })
+mymainmenu = awful.menu({ items = menu_items, width = 150 })
 
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
+
+-- desktop icons
+-- for s = 1, screen.count() do
+--     freedesktop.desktop.add_applications_icons({screen = s, showlabels = true})
+--     freedesktop.desktop.add_dirs_and_files_icons({screen = s, showlabels = true})
+-- end
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -250,9 +220,6 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(spacer)
-    right_layout:add(baticon)
-    right_layout:add(batpct)
     right_layout:add(spacer)
     right_layout:add(volicon)
     right_layout:add(volpct)
@@ -362,10 +329,8 @@ globalkeys = awful.util.table.join(
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end),
 
-    -- Volume and display
-    awful.key({ "Mod2" }, "XF86AudioMute",        function () awful.util.spawn_with_shell("amixer -q set Master toggle",False) end),
-    awful.key({ "Mod2" }, "XF86AudioRaiseVolume", function () awful.util.spawn_with_shell("amixer -q set Master 5%+",   False) end),
-    awful.key({ "Mod2" }, "XF86AudioLowerVolume", function () awful.util.spawn_with_shell("amixer -q set Master 5%-",   False) end)
+    -- Shortcuts
+    awful.key({ modkey }, "e", function() awful.util.spawn(filemanager) end)
 )
 
 clientkeys = awful.util.table.join(
@@ -444,14 +409,7 @@ awful.rules.rules = {
                      border_color = beautiful.border_normal,
                      focus = awful.client.focus.filter,
                      keys = clientkeys,
-                     buttons = clientbuttons } },
-    { rule = { class = "mplayer" },
-      properties = { floating = true } },
-    { rule = { class = "gimp" },
-      properties = { floating = true } },    
-    -- Set Firefox to always map on tags number 2 of screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { tag = tags[1][2] } },
+                     buttons = clientbuttons } }
 }
 -- }}}
 
