@@ -47,7 +47,7 @@ end
 -- }}}
 
 -- This is used later as the default terminal and editor to run.
-terminal = "terminator" 
+terminal = "lxterminal" 
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 filemanager = "caja"
