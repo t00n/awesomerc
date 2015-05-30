@@ -95,6 +95,14 @@ naughty.config.defaults.border_width = 2
 naughty.config.defaults.hover_timeout = nil
 -- -- }}}
 
+-- {{{ Wallpaper
+if beautiful.wallpaper then
+    for s = 1, screen.count() do
+        gears.wallpaper.maximized(beautiful.wallpaper, s, true)
+    end
+end
+-- }}}
+
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tags = {}
@@ -104,10 +112,32 @@ for s = 1, screen.count() do
 end
 -- }}}
 
+-- Wallpaper Changer Based On 
+-- menu icon menu pdq 07-02-2012
+ local wallmenu = {}
+ local function wall_load(wall)
+ local f = io.popen('ln -sfn ' .. home_path .. '.config/awesome/wallpaper/' .. wall .. ' ' .. home_path .. '.config/awesome/themes/default/bg.png')
+ awesome.restart()
+ end
+ local function wall_menu()
+ local f = io.popen('ls -1 ' .. home_path .. '.config/awesome/wallpaper/')
+ for l in f:lines() do
+local item = { l, function () wall_load(l) end }
+ table.insert(wallmenu, item)
+ end
+ f:close()
+ end
+ wall_menu()
+
 -- Widgets 
 
 spacer       = wibox.widget.textbox()
 spacer:set_text(' | ')
+
+--Weather Widget
+weather = wibox.widget.textbox()
+vicious.register(weather, vicious.widgets.weather, "${city}:  Ciel: ${sky}  T°: ${tempc}°C  Humidité: ${humid}%  Vent: ${windkmh} km/h", 1200, "EBBR")
+
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
@@ -194,7 +224,7 @@ for s = 1, screen.count() do
     -- We need one layoutbox per screen.
     mylayoutbox[s] = awful.widget.layoutbox(s)
     mylayoutbox[s]:buttons(awful.util.table.join(
-                           awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),   
+                           awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
                            awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
                            awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
                            awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
@@ -204,36 +234,55 @@ for s = 1, screen.count() do
     -- Create a tasklist widget
     mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
-
     -- Create the wibox
     mywibox[s] = awful.wibox({ position = "top", screen = s })
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
+    left_layout:add(mylauncher)
+    left_layout:add(mytaglist[s])
     left_layout:add(mypromptbox[s])
-    left_layout:add(cpuicon)
-    left_layout:add(cpu)
-    left_layout:add(spacer)
-    left_layout:add(memicon)
-    left_layout:add(mem)
-    left_layout:add(spacer)
-    left_layout:add(wifiicon)
-    left_layout:add(wifi)
-    left_layout:add(spacer)
-    left_layout:add(weather)
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(spacer)
+    right_layout:add(volicon)
+    right_layout:add(volpct)
+    right_layout:add(volspace)
+    right_layout:add(spacer)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
     layout:set_left(left_layout)
+    layout:set_middle(mytasklist[s])
     layout:set_right(right_layout)
 
-    mywibox[s]:set_widget(layout)
+   mywibox[s]:set_widget(layout)
+   
+   -- Create the bottom wibox
+     myinfowibox[s] = awful.wibox({ position = "bottom", screen = s })
+   -- Widgets that are aligned to the bottom
+    local bottom_layout = wibox.layout.fixed.horizontal()
+    bottom_layout:add(cpuicon)
+    bottom_layout:add(cpu)
+    bottom_layout:add(spacer)
+    bottom_layout:add(memicon)
+    bottom_layout:add(mem)
+    bottom_layout:add(spacer)
+    bottom_layout:add(wifiicon)
+    bottom_layout:add(wifi)
+    bottom_layout:add(spacer)
+    bottom_layout:add(weather)
+
+ -- Now bring it all together 
+    --local layout = wibox.layout.align.horizontal()
+    --layout:set_bottom(bottom_layout)
+
+    myinfowibox[s]:set_widget(bottom_layout)
+
 end
 -- }}}
 
