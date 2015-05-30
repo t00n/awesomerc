@@ -138,6 +138,10 @@ spacer:set_text(' | ')
 weather = wibox.widget.textbox()
 vicious.register(weather, vicious.widgets.weather, "${city}:  Ciel: ${sky}  T°: ${tempc}°C  Humidité: ${humid}%  Vent: ${windkmh} km/h", 1200, "EBBR")
 
+--Battery Widget
+batt = wibox.widget.textbox()
+vicious.register(batt, vicious.widgets.bat, "Batt: $2% Rem: $3", 61, "BAT")
+
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
@@ -246,6 +250,9 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(spacer)
+    right_layout:add(baticon)
+    right_layout:add(batpct)
     right_layout:add(spacer)
     right_layout:add(volicon)
     right_layout:add(volpct)
