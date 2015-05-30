@@ -2,6 +2,7 @@
 home_path  = os.getenv('HOME') .. '/'
 
 -- Standard awesome library
+local gears = require("gears")
 local awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
@@ -19,6 +20,7 @@ require('freedesktop.utils')
 require('freedesktop.menu')
 freedesktop.utils.icon_theme = 'gnome'
 --Vicious + Widgets 
+vicious = require("vicious")
 local wi = require("wi")
 
 -- {{{ Error handling
@@ -282,6 +284,8 @@ globalkeys = awful.util.table.join(
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
               end),
+    -- Menubar
+    awful.key({ modkey }, "p", function() menubar.show() end),
 
     -- Volume and display
     awful.key({ "Mod2" }, "XF86AudioMute",        function () awful.util.spawn_with_shell("amixer -q set Master toggle",False) end),
