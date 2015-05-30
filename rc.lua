@@ -13,7 +13,6 @@ beautiful.init( awful.util.getdir("config") .. "/themes/default/theme.lua" )
 
 -- Notification library
 local naughty = require("naughty")
-local menubar = require("menubar")
 --FreeDesktop
 require('freedesktop.utils')
 require('freedesktop.menu')
@@ -109,7 +108,6 @@ spacer:set_text(' | ')
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
-
 menu_items = freedesktop.menu.new()
 
 -- {{{ Wibox
@@ -365,14 +363,7 @@ awful.rules.rules = {
                      border_color = beautiful.border_normal,
                      focus = awful.client.focus.filter,
                      keys = clientkeys,
-                     buttons = clientbuttons } },
-    { rule = { class = "mplayer" },
-      properties = { floating = true } },
-    { rule = { class = "gimp" },
-      properties = { floating = true } },    
-    -- Set Firefox to always map on tags number 2 of screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { tag = tags[1][2] } },
+                     buttons = clientbuttons } }
 }
 -- }}}
 
