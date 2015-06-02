@@ -9,7 +9,7 @@ require("awful.autofocus")
 local wibox = require("wibox")
 -- Theme handling library
 local beautiful = require("beautiful")
-beautiful.init( awful.util.getdir("config") .. "/themes/default/theme.lua" )
+beautiful.init( awful.util.getdir("config") .. "/themes/zenburn/theme.lua" )
 
 -- Notification library
 local naughty = require("naughty")
@@ -84,9 +84,9 @@ naughty.config.defaults.position = "top_right"
 naughty.config.defaults.margin = 8
 naughty.config.defaults.gap = 1
 naughty.config.defaults.ontop = true
-naughty.config.defaults.font = "terminus 5"
+naughty.config.defaults.font = "terminus 10"
 naughty.config.defaults.icon = nil
-naughty.config.defaults.icon_size = 256
+naughty.config.defaults.icon_size = 32
 naughty.config.defaults.fg = beautiful.fg_tooltip
 naughty.config.defaults.bg = beautiful.bg_tooltip
 naughty.config.defaults.border_color = beautiful.border_tooltip
