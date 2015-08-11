@@ -13,7 +13,6 @@ beautiful.init( awful.util.getdir("config") .. "/themes/zenburn/theme.lua" )
 
 -- Notification library
 local naughty = require("naughty")
-local menubar = require("menubar")
 --FreeDesktop
 require('freedesktop.utils')
 freedesktop.utils.icon_theme = 'oxygen'
@@ -50,7 +49,7 @@ end
 terminal = "lxterminal" 
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
-filemanager = "caja"
+filemanager = "caja " .. home_path
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -108,11 +107,6 @@ end
 spacer       = wibox.widget.textbox()
 spacer:set_text(' | ')
 
-
--- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
--- }}}
-
 -- Create a wibox for each screen and add it
 myinfowibox = {}
 mypromptbox = {}
@@ -145,16 +139,16 @@ for s = 1, screen.count() do
     local right_layout = wibox.layout.fixed.horizontal()
     local left_layout = wibox.layout.fixed.horizontal()
     left_layout:add(mypromptbox[s])
-    right_layout:add(cpuicon)
-    right_layout:add(cpu)
-    right_layout:add(spacer)
-    right_layout:add(memicon)
-    right_layout:add(mem)
-    right_layout:add(spacer)
-    right_layout:add(wifiicon)
-    right_layout:add(wifi)
-    right_layout:add(spacer)
-    right_layout:add(weather)
+    left_layout:add(cpuicon)
+    left_layout:add(cpu)
+    left_layout:add(spacer)
+    left_layout:add(memicon)
+    left_layout:add(mem)
+    left_layout:add(spacer)
+    left_layout:add(wifiicon)
+    left_layout:add(wifi)
+    left_layout:add(spacer)
+    left_layout:add(weather)
     right_layout:add(mylayoutbox[s])
 
     bottom_layout:set_left(left_layout)
@@ -166,7 +160,6 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
 ))
@@ -217,7 +210,6 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
-    awful.key({ modkey,           }, "w",     function () mymainmenu:show()             end),
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
     -- Prompt
@@ -230,8 +222,6 @@ globalkeys = awful.util.table.join(
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
               end),
-    -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end),
 
     -- Shortcuts
     awful.key({ modkey }, "e", function() awful.util.spawn(filemanager) end)
