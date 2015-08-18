@@ -49,7 +49,7 @@ end
 terminal = "lxterminal" 
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
-filemanager = "caja " .. home_path
+filemanager = "pcmanfm"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
