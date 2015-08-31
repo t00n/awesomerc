@@ -304,7 +304,12 @@ awful.rules.rules = {
                      border_color = beautiful.border_normal,
                      focus = awful.client.focus.filter,
                      keys = clientkeys,
-                     buttons = clientbuttons } }
+                     buttons = clientbuttons } },
+    { rule = { class = "Mate-panel" },
+      properties = { floating = true },
+      callback = function(c) 
+                    c:geometry({width = 1366, height = 24})
+                 end }
 }
 -- }}}
 
