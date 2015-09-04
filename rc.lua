@@ -299,13 +299,13 @@ root.keys(globalkeys)
 awful.rules.rules = {
     -- All clients will match this rule.
     { rule = { },
-      except = { class = "Mate-panel" },
+      except = { name = "Top Expanded Edge Panel" },
       properties = { border_width = beautiful.border_width,
                      border_color = beautiful.border_normal,
                      focus = awful.client.focus.filter,
                      keys = clientkeys,
                      buttons = clientbuttons } },
-    { rule = { class = "Mate-panel" },
+    { rule = { name = "Top Expanded Edge Panel" },
       properties = { floating = true },
       callback = function(c) 
                     c:geometry({width = 1366, height = 24})
