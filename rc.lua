@@ -46,7 +46,7 @@ end
 -- }}}
 
 -- This is used later as the default terminal and editor to run.
-terminal = "lxterminal" 
+terminal = "mate-terminal" 
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 filemanager = "pcmanfm"
@@ -308,7 +308,7 @@ awful.rules.rules = {
     { rule = { name = "Top Expanded Edge Panel" },
       properties = { floating = true },
       callback = function(c) 
-                    c:geometry({width = 1366, height = 24})
+                    c:geometry({width = 1366, height = 28})
                  end }
 }
 -- }}}
