@@ -78,15 +78,28 @@ if beautiful.wallpaper then
 end
 -- }}}
 
+-- Grab focus on first client on screen
+function grab_focus()
+    local all_clients = client.get()
+    for i, c in pairs(all_clients) do
+        if c:isvisible() and c.class ~= "Mate-panel" then
+            client.focus = c
+        end
+    end
+end
+
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tags = {
     names = { "1", 2, 3, 4, "5", 6, 7, 8, "9" },
-	layout = {layouts[8], layouts[8], layouts[8], layouts[9], layouts[9], layouts[3], layouts[3], layouts[3], layouts[3]}
+    layout = {layouts[8], layouts[8], layouts[8], layouts[9], layouts[9], layouts[3], layouts[3], layouts[3], layouts[3]}
 }
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
     tags[s] = awful.tag(tags.names, s, tags.layout)
+	for k, t in pairs(tags[s]) do
+		t:connect_signal("property::selected", grab_focus)
+    end
 end
 -- }}}
 
@@ -362,6 +375,8 @@ awful.rules.rules = {
                      raise = true,
                      keys = clientkeys,
                      buttons = clientbuttons } },
+    { rule = { class = "Mate-panel" },
+          properties = { floating = true, focus = false, height=24 } },
     { rule = { class = "MPlayer" },
       properties = { floating = true } },
     { rule = { class = "pinentry" },
