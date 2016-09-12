@@ -44,6 +44,8 @@ beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 terminal = "mate-terminal"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
+filemanager = "pcmanfm"
+
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -262,8 +264,9 @@ globalkeys = awful.util.table.join(
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey, "Control" }, "r", awesome.restart),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+    awful.key({ modkey            }, "e",      function() awful.util.spawn(filemanager) end),
+    awful.key({ modkey, "Control" }, "r",      awesome.restart),
+    awful.key({ modkey, "Shift"   }, "q",      awesome.quit),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
