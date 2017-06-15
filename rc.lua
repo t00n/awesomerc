@@ -313,6 +313,14 @@ clientkeys = awful.util.table.join(
         end)
 )
 
+function grab_focus()
+    local c = awful.mouse.client_under_pointer()
+    if c then
+        client.focus = c
+        c:raise()
+    end
+end
+
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
@@ -326,6 +334,7 @@ for i = 1, 9 do
                         if tag then
                            awful.tag.viewonly(tag)
                         end
+			grab_focus()
                   end),
         -- Toggle tag.
         awful.key({ modkey, "Control" }, "#" .. i + 9,
